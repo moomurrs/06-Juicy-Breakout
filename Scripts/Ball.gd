@@ -64,6 +64,10 @@ func _physics_process(delta):
 			body.find_node("Debris").emitting = true
 			body.kill()
 		add_trauma(2.0)
+		if body.name == "Paddle":
+			var tile_rows = get_tree().get_nodes_in_group("Tile Row")
+			for tile in tile_rows:
+				tile.add_trauma(0.5)
 	
 	if position.y > get_viewport().size.y:
 		Game.change_lives(-1)

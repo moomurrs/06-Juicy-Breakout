@@ -18,13 +18,19 @@ func _process(delta):
 
 
 func add_trauma(amount):
-	_trauma = min(_trauma + amound, 1)
+	_trauma = min(_trauma + amount, 1)
 
 
 func _decay_trauma(delta):
-	var change = decay_rate * delta
+	var change = _decay_rate * delta
 	_trauma = max(_trauma - change, 0)
 
 func _apply_shake():
 	var shake = _trauma * _trauma
-	var o_w = max_offset * shake 
+	var o_y = _max_offset * shake * _get_neg_or_pos_scalar()
+	## ???? IS THIS THE CORRECT OPERATION?
+	position = _start_position + Vector2(0, o_y)
+	
+
+func _get_neg_or_pos_scalar():
+	return rand_range(-1.0, 1.0)
