@@ -1,8 +1,27 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Tile.gd" type="Script" id=1]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.519184, 0.4472 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.1216 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+emission_shape = 2
+emission_box_extents = Vector3( 40, 1, 1 )
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 98, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 43.75
+radial_accel_random = 0.5
+scale = 6.0
+scale_curve = SubResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 32, 16 )
 
 [node name="Tile" type="StaticBody2D" groups=[
@@ -13,6 +32,17 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
+
+[node name="Debris" type="Particles2D" parent="."]
+emitting = false
+lifetime = 2.0
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.7
+randomness = 0.5
+visibility_rect = Rect2( -10, -10, 200, 200 )
+local_coords = false
+process_material = SubResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = -32.0
@@ -25,7 +55,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+shape = SubResource( 4 )
 
 [node name="Tween" type="Tween" parent="."]
 
