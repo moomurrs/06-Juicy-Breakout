@@ -28,7 +28,7 @@ func _decay_trauma(delta):
 func _apply_shake():
 	var shake = _trauma * _trauma
 	var o_y = _max_offset * shake * _get_neg_or_pos_scalar()
-	## ???? IS THIS THE CORRECT OPERATION?
+	
 	position = _start_position + Vector2(0, o_y)
 	
 

@@ -1,6 +1,7 @@
 extends RigidBody2D
 
 onready var Game = get_node("/root/Game")
+onready var Camera = get_node("/root/Game/Camera")
 onready var Starting = get_node("/root/Game/Starting")
 onready var Comet = get_node("/root/Game/Comet")
 var _decay_rate = 0.0
@@ -57,13 +58,16 @@ func _physics_process(delta):
 	# Check for collisions
 	var bodies = get_colliding_bodies()
 	for body in bodies:
+		Camera.add_trauma(0.2)
+		
+		add_trauma(2.0)
 		if body.is_in_group("Tiles"):
 			Game.change_score(body.points)
 			add_color(1.0)
 			# play Debris particles from tiles
 			body.find_node("Debris").emitting = true
 			body.kill()
-		add_trauma(2.0)
+		
 		if body.name == "Paddle":
 			var tile_rows = get_tree().get_nodes_in_group("Tile Row")
 			for tile in tile_rows:
