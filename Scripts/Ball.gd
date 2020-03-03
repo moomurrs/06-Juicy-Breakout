@@ -4,9 +4,14 @@ onready var Game = get_node("/root/Game")
 onready var Camera = get_node("/root/Game/Camera")
 onready var Starting = get_node("/root/Game/Starting")
 onready var Comet = get_node("/root/Game/Comet")
+onready var backRect = get_node("root/Game/background")
 var _decay_rate = 0.0
 var _max_offset = 4
 var trauma_color = Color(1,1,1,1)
+#signal paddleSignal
+onready var wallHit = get_node("/root/Game/WallHit")
+onready var tileHit = get_node("/root/Game/TileHit")
+onready var paddleHit = get_node("/root/Game/PaddleHit")
 
 var _start_size 
 var _trauma = 0.0
@@ -62,17 +67,27 @@ func _physics_process(delta):
 		
 		add_trauma(2.0)
 		if body.is_in_group("Tiles"):
+			
 			Game.change_score(body.points)
 			add_color(1.0)
 			# play Debris particles from tiles
 			body.find_node("Debris").emitting = true
+			tileHit.play()
 			body.kill()
 		
 		if body.name == "Paddle":
+			#emit_signal("paddleSignal")
+			paddleHit.play()
+			#backRect.color = Color(rand_range(0, .5), rand_range(0, .5),  1, 1)
 			var tile_rows = get_tree().get_nodes_in_group("Tile Row")
 			for tile in tile_rows:
 				tile.add_trauma(0.5)
-	
+				Camera.add_trauma(0.05)
+				
+		if body.name == "Wall":
+			wallHit.play()
+	rotate(_rotation)
+	_rotation += (_rotation_speed * linear_velocity.normalized().x)
 	if position.y > get_viewport().size.y:
 		Game.change_lives(-1)
 		Starting.startCountdown(3)

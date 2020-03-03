@@ -8,6 +8,7 @@ var new_ball = preload("res://Scenes/Ball.tscn")
 
 
 func _ready():
+	
 	randomize()
 	$Score.update_score(score)
 	$Lives.update_lives(lives)
